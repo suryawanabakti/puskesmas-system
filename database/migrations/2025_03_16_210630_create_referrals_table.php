@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('reason');
             $table->enum('status', ['pending', 'completed'])->default('pending');
             $table->string('doctor');
+            $table->foreignId('doctor_id')->constrained('users')->onDelete('cascade');
             $table->date('referral_date');
             $table->timestamps();
         });

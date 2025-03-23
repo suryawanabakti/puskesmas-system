@@ -100,7 +100,7 @@ export default function ExaminationsCreate({ patients, medicines }: Examinations
                                 {errors.complaint && <p className="text-sm text-red-500">{errors.complaint}</p>}
                             </div>
 
-                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-1">
                                 <div className="space-y-2">
                                     <Label htmlFor="diagnosis">Diagnosis</Label>
                                     <Input
@@ -110,17 +110,6 @@ export default function ExaminationsCreate({ patients, medicines }: Examinations
                                         placeholder="Masukkan diagnosis"
                                     />
                                     {errors.diagnosis && <p className="text-sm text-red-500">{errors.diagnosis}</p>}
-                                </div>
-
-                                <div className="space-y-2">
-                                    <Label htmlFor="doctor">Dokter</Label>
-                                    <Input
-                                        id="doctor"
-                                        value={data.doctor}
-                                        onChange={(e) => setData('doctor', e.target.value)}
-                                        placeholder="Masukkan nama dokter"
-                                    />
-                                    {errors.doctor && <p className="text-sm text-red-500">{errors.doctor}</p>}
                                 </div>
                             </div>
 

@@ -39,7 +39,7 @@ class ReferralController extends Controller
             'referred_to' => 'required|string',
             'reason' => 'required|string',
             'status' => 'required|in:pending,completed',
-            'doctor' => 'required|string',
+            // 'doctor' => 'required|string',
             'referral_date' => 'required|date',
         ]);
 
@@ -54,6 +54,8 @@ class ReferralController extends Controller
 
         $validated['referral_id'] = $referralId;
 
+        $validated['doctor_id'] = $request->user()->id;
+        $validated['doctor'] = $request->user()->name;
         Referral::create($validated);
 
         return redirect()->route('referrals.index')

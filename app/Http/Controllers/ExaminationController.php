@@ -14,11 +14,14 @@ class ExaminationController extends Controller
     public function index()
     {
         $examinations = Examination::with('patient')
-            ->latest()
-            ->paginate(10);
+            ->latest();
+
+        if (request()->user()->role === 'dokter') {
+            $examinations->where('doctor_id', request()->user()->id);
+        }
 
         return Inertia::render('Examinations/Index', [
-            'examinations' => $examinations
+            'examinations' => $examinations->paginate(10)
         ]);
     }
 
@@ -44,7 +47,7 @@ class ExaminationController extends Controller
             'complaint' => 'required|string',
             'diagnosis' => 'required|string',
             'treatment' => 'required|string',
-            'doctor' => 'required|string',
+            // 'doctor' => 'required|string',
             'examination_date' => 'required|date',
             'prescriptions' => 'nullable|array',
             'prescriptions.*.medicine_id' => 'required|exists:medicines,id',
@@ -64,11 +67,12 @@ class ExaminationController extends Controller
 
         $examination = Examination::create([
             'examination_id' => $examinationId,
+            'doctor_id' => $request->user()->id,
             'patient_id' => $validated['patient_id'],
             'complaint' => $validated['complaint'],
             'diagnosis' => $validated['diagnosis'],
             'treatment' => $validated['treatment'],
-            'doctor' => $validated['doctor'],
+            'doctor' => $request->user()->name,
             'examination_date' => $validated['examination_date'],
         ]);
 

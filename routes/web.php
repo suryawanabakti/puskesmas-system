@@ -10,7 +10,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    return redirect('/login');
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -22,14 +22,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard.dokter');
 
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+
+    Route::resource('patients', PatientController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('examinations', ExaminationController::class);
+    Route::resource('referrals', ReferralController::class);
+    Route::resource('medicines', MedicineController::class);
     Route::get('/reports/{type}/print', [ReportController::class, 'print'])->name('reports.print');
 });
-
-Route::resource('patients', PatientController::class);
-Route::resource('users', UserController::class);
-Route::resource('examinations', ExaminationController::class);
-Route::resource('referrals', ReferralController::class);
-Route::resource('medicines', MedicineController::class);
 
 require __DIR__ . '/settings.php';
 require __DIR__ . '/auth.php';

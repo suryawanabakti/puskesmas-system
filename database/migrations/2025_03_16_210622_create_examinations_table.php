@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('examination_id')->unique();
             $table->foreignId('patient_id')->constrained()->onDelete('cascade');
+            $table->foreignId('doctor_id')->constrained('users')->onDelete('cascade');
             $table->text('complaint');
             $table->text('diagnosis');
             $table->text('treatment');

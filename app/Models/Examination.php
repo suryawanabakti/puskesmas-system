@@ -14,6 +14,7 @@ class Examination extends Model
     protected $fillable = [
         'examination_id',
         'patient_id',
+        'doctor_id',
         'complaint',
         'diagnosis',
         'treatment',
