@@ -54,15 +54,16 @@ const adminNavItems: NavItem[] = [
 const footerNavItems: NavItem[] = [
     {
         title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
+        href: 'https://github.com/suryawanabakti/puskesmas-system',
         icon: Folder,
     },
     {
         title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits',
+        href: 'https://github.com/suryawanabakti/puskesmas-system',
         icon: BookOpen,
     },
 ];
+
 const dokterNavItems: NavItem[] = [
     {
         title: 'Dashboard',
@@ -116,6 +117,19 @@ const apotekerNavItems: NavItem[] = [
     },
 ];
 
+const pasienNavItems: NavItem[] = [
+    {
+        title: 'Examinations',
+        href: '/examinations',
+        icon: Clipboard,
+    },
+    {
+        title: 'Rujukan',
+        href: '/referrals',
+        icon: Activity,
+    },
+];
+
 export function AppSidebar() {
     const { auth } = usePage<SharedData>().props;
 
@@ -138,6 +152,7 @@ export function AppSidebar() {
 
                 {auth.user.role === 'dokter' && <NavMain items={dokterNavItems} />}
                 {auth.user.role === 'apoteker' && <NavMain items={apotekerNavItems} />}
+                {auth.user.role === 'pasien' && <NavMain items={pasienNavItems} />}
             </SidebarContent>
 
             <SidebarFooter>

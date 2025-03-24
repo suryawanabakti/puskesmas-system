@@ -98,6 +98,16 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             </form>
 
             {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
+
+            {/* Navigation to Register page */}
+            <div className="mt-4 text-center">
+                <p className="text-sm">
+                    Don't have an account?{' '}
+                    <TextLink href={route('register')} className="font-medium text-blue-600 hover:text-blue-500">
+                        Register here
+                    </TextLink>
+                </p>
+            </div>
         </AuthLayout>
     );
 }

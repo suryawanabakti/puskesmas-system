@@ -1,12 +1,15 @@
+'use client';
+
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
+import type { FormEventHandler } from 'react';
 
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AuthLayout from '@/layouts/auth-layout';
 
 type RegisterForm = {
@@ -14,6 +17,12 @@ type RegisterForm = {
     email: string;
     password: string;
     password_confirmation: string;
+
+    nik: string;
+    gender: 'Laki-laki' | 'Perempuan';
+    birth_date: string;
+    address: string;
+    phone: string;
 };
 
 export default function Register() {
@@ -22,6 +31,11 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        nik: '',
+        gender: 'Laki-laki',
+        birth_date: '',
+        address: '',
+        phone: '',
     });
 
     const submit: FormEventHandler = (e) => {
@@ -70,12 +84,91 @@ export default function Register() {
                     </div>
 
                     <div className="grid gap-2">
+                        <Label htmlFor="nik">NIK</Label>
+                        <Input
+                            id="nik"
+                            type="text"
+                            required
+                            tabIndex={4}
+                            maxLength={20}
+                            value={data.nik}
+                            onChange={(e) => setData('nik', e.target.value)}
+                            disabled={processing}
+                            placeholder="National Identity Number"
+                        />
+                        <InputError message={errors.nik} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="gender">Gender</Label>
+                        <Select
+                            value={data.gender}
+                            onValueChange={(value) => setData('gender', value as 'Laki-laki' | 'Perempuan')}
+                            disabled={processing}
+                        >
+                            <SelectTrigger id="gender" tabIndex={5}>
+                                <SelectValue placeholder="Select gender" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="Laki-laki">Laki-laki</SelectItem>
+                                <SelectItem value="Perempuan">Perempuan</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <InputError message={errors.gender} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="birth_date">Birth Date</Label>
+                        <Input
+                            id="birth_date"
+                            type="date"
+                            required
+                            tabIndex={6}
+                            value={data.birth_date}
+                            onChange={(e) => setData('birth_date', e.target.value)}
+                            disabled={processing}
+                        />
+                        <InputError message={errors.birth_date} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="address">Address</Label>
+                        <Input
+                            id="address"
+                            type="text"
+                            required
+                            tabIndex={7}
+                            value={data.address}
+                            onChange={(e) => setData('address', e.target.value)}
+                            disabled={processing}
+                            placeholder="Full address"
+                        />
+                        <InputError message={errors.address} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="phone">Phone Number</Label>
+                        <Input
+                            id="phone"
+                            type="tel"
+                            required
+                            tabIndex={8}
+                            maxLength={15}
+                            value={data.phone}
+                            onChange={(e) => setData('phone', e.target.value)}
+                            disabled={processing}
+                            placeholder="Phone number"
+                        />
+                        <InputError message={errors.phone} />
+                    </div>
+
+                    <div className="grid gap-2">
                         <Label htmlFor="password">Password</Label>
                         <Input
                             id="password"
                             type="password"
                             required
-                            tabIndex={3}
+                            tabIndex={10}
                             autoComplete="new-password"
                             value={data.password}
                             onChange={(e) => setData('password', e.target.value)}
@@ -91,7 +184,7 @@ export default function Register() {
                             id="password_confirmation"
                             type="password"
                             required
-                            tabIndex={4}
+                            tabIndex={11}
                             autoComplete="new-password"
                             value={data.password_confirmation}
                             onChange={(e) => setData('password_confirmation', e.target.value)}
@@ -101,7 +194,7 @@ export default function Register() {
                         <InputError message={errors.password_confirmation} />
                     </div>
 
-                    <Button type="submit" className="mt-2 w-full" tabIndex={5} disabled={processing}>
+                    <Button type="submit" className="mt-2 w-full" tabIndex={12} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Create account
                     </Button>
@@ -109,7 +202,7 @@ export default function Register() {
 
                 <div className="text-muted-foreground text-center text-sm">
                     Already have an account?{' '}
-                    <TextLink href={route('login')} tabIndex={6}>
+                    <TextLink href={route('login')} tabIndex={13}>
                         Log in
                     </TextLink>
                 </div>

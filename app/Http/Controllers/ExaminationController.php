@@ -13,6 +13,7 @@ class ExaminationController extends Controller
 {
     public function index()
     {
+       
         $examinations = Examination::with('patient')
             ->latest();
 
@@ -20,6 +21,10 @@ class ExaminationController extends Controller
             $examinations->where('doctor_id', request()->user()->id);
         }
 
+        if (request()->user()->role === 'pasien') {
+            $examinations->where('patient_id', request()->user()->patient->id);
+        }
+        
         return Inertia::render('Examinations/Index', [
             'examinations' => $examinations->paginate(10)
         ]);

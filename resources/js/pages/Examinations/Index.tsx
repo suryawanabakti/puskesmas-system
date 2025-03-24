@@ -5,8 +5,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type Examination, type PaginatedData } from '@/types';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { SharedData, type BreadcrumbItem, type Examination, type PaginatedData } from '@/types';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { Edit, FileText, MoreHorizontal, Plus, Trash2 } from 'lucide-react';
 import React from 'react';
 
@@ -44,18 +44,22 @@ export default function ExaminationsIndex({ examinations }: ExaminationsIndexPro
         });
     };
 
+    const { auth } = usePage<SharedData>().props;
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Data Pemeriksaan" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
                 <div className="flex items-center justify-between">
                     <h1 className="text-2xl font-bold">Daftar Pemeriksaan</h1>
-                    <Link href={route('examinations.create')}>
-                        <Button className="bg-green-600 hover:bg-green-700">
-                            <Plus className="mr-2 h-4 w-4" />
-                            Tambah Pemeriksaan
-                        </Button>
-                    </Link>
+                    {auth.user.role !== 'pasien' && (
+                        <Link href={route('examinations.create')}>
+                            <Button className="bg-green-600 hover:bg-green-700">
+                                <Plus className="mr-2 h-4 w-4" />
+                                Tambah Pemeriksaan
+                            </Button>
+                        </Link>
+                    )}
                 </div>
 
                 <Card>
@@ -91,7 +95,7 @@ export default function ExaminationsIndex({ examinations }: ExaminationsIndexPro
                                 <TableHead>Diagnosis</TableHead>
                                 <TableHead>Penanganan</TableHead>
                                 <TableHead>Dokter</TableHead>
-                                <TableHead className="text-right">Aksi</TableHead>
+                                {auth.user.role !== 'pasien' && <TableHead className="text-right">Aksi</TableHead>}
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -105,41 +109,43 @@ export default function ExaminationsIndex({ examinations }: ExaminationsIndexPro
                                         <TableCell>{examination.diagnosis}</TableCell>
                                         <TableCell>{examination.treatment}</TableCell>
                                         <TableCell>{examination.doctor}</TableCell>
-                                        <TableCell className="text-right">
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" className="h-8 w-8 p-0">
-                                                        <span className="sr-only">Open menu</span>
-                                                        <MoreHorizontal className="h-4 w-4" />
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem asChild>
-                                                        <Link href={route('examinations.show', examination.id)}>
-                                                            <FileText className="mr-2 h-4 w-4" />
-                                                            <span>Detail</span>
-                                                        </Link>
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem asChild>
-                                                        <Link href={route('examinations.edit', examination.id)}>
-                                                            <Edit className="mr-2 h-4 w-4" />
-                                                            <span>Edit</span>
-                                                        </Link>
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem asChild>
-                                                        <Link
-                                                            href={route('examinations.destroy', examination.id)}
-                                                            method="delete"
-                                                            as="button"
-                                                            className="w-full text-left text-red-600"
-                                                        >
-                                                            <Trash2 className="mr-2 h-4 w-4" />
-                                                            <span>Hapus</span>
-                                                        </Link>
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </TableCell>
+                                        {auth.user.role !== 'pasien' && (
+                                            <TableCell className="text-right">
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <Button variant="ghost" className="h-8 w-8 p-0">
+                                                            <span className="sr-only">Open menu</span>
+                                                            <MoreHorizontal className="h-4 w-4" />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="end">
+                                                        <DropdownMenuItem asChild>
+                                                            <Link href={route('examinations.show', examination.id)}>
+                                                                <FileText className="mr-2 h-4 w-4" />
+                                                                <span>Detail</span>
+                                                            </Link>
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem asChild>
+                                                            <Link href={route('examinations.edit', examination.id)}>
+                                                                <Edit className="mr-2 h-4 w-4" />
+                                                                <span>Edit</span>
+                                                            </Link>
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem asChild>
+                                                            <Link
+                                                                href={route('examinations.destroy', examination.id)}
+                                                                method="delete"
+                                                                as="button"
+                                                                className="w-full text-left text-red-600"
+                                                            >
+                                                                <Trash2 className="mr-2 h-4 w-4" />
+                                                                <span>Hapus</span>
+                                                            </Link>
+                                                        </DropdownMenuItem>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            </TableCell>
+                                        )}
                                     </TableRow>
                                 ))
                             ) : (

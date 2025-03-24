@@ -12,11 +12,18 @@ class ReferralController extends Controller
     public function index()
     {
         $referrals = Referral::with('patient')
-            ->latest()
-            ->paginate(10);
+            ->latest();
+
+            if (request()->user()->role === 'dokter') {
+                $referrals->where('doctor_id', request()->user()->id);
+            }
+    
+            if (request()->user()->role === 'pasien') {
+                $referrals->where('patient_id', request()->user()->patient->id);
+            }
 
         return Inertia::render('Referrals/Index', [
-            'referrals' => $referrals
+            'referrals' => $referrals->paginate(10)
         ]);
     }
 
