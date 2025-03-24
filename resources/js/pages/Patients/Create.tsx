@@ -27,6 +27,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function PatientsCreate() {
     const { data, setData, post, processing, errors } = useForm({
+        email: '',
+        password: '',
         nik: '',
         name: '',
         gender: '',
@@ -134,6 +136,28 @@ export default function PatientsCreate() {
                                         </SelectContent>
                                     </Select>
                                     {errors.status && <p className="text-sm text-red-500">{errors.status}</p>}
+                                </div>
+                            </div>
+                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label htmlFor="email">Email</Label>
+                                    <Input
+                                        id="email"
+                                        value={data.email}
+                                        onChange={(e) => setData('email', e.target.value)}
+                                        placeholder="Masukkan email"
+                                    />
+                                    {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="password">password</Label>
+                                    <Input
+                                        id="password"
+                                        value={data.password}
+                                        onChange={(e) => setData('password', e.target.value)}
+                                        placeholder="Masukkan password"
+                                    />
+                                    {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
                                 </div>
                             </div>
                         </CardContent>

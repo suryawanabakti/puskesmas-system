@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -25,6 +26,8 @@ class PatientController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required',
             'nik' => 'required|string|max:20|unique:patients',
             'name' => 'required|string|max:255',
             'gender' => 'required|in:Laki-laki,Perempuan',
@@ -35,6 +38,13 @@ class PatientController extends Controller
         ]);
 
         // Generate patient_id
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role' => 'pasien'
+        ]);
+
         $latestPatient = Patient::latest()->first();
         $patientId = 'P001';
 
@@ -44,6 +54,7 @@ class PatientController extends Controller
         }
 
         $validated['patient_id'] = $patientId;
+        $validated['user_id'] = $user->id;
 
         Patient::create($validated);
 
